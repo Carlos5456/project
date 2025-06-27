@@ -5,6 +5,7 @@ const Questions = () => {
   const [newQuestion, setNewQuestion] = useState('');
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [likedQuestions, setLikedQuestions] = useState<number[]>([]);
 
   const questions = [
     {
@@ -62,11 +63,22 @@ const Questions = () => {
 
   const handleSubmitQuestion = () => {
     if (newQuestion.trim()) {
-      // Aqui seria enviada a pergunta para um sistema backend
       alert('Sua pergunta foi enviada! Em breve alguém da comunidade irá responder.');
       setNewQuestion('');
       setShowQuestionForm(false);
     }
+  };
+
+  const handleLikeQuestion = (questionId: number) => {
+    setLikedQuestions(prev => 
+      prev.includes(questionId) 
+        ? prev.filter(id => id !== questionId)
+        : [...prev, questionId]
+    );
+  };
+
+  const handleRespond = (questionId: number) => {
+    alert('Funcionalidade de resposta estará disponível em breve! Por enquanto, você pode fazer uma nova pergunta.');
   };
 
   return (
@@ -136,52 +148,67 @@ const Questions = () => {
 
         {/* Questions List */}
         <div className="space-y-6">
-          {filteredQuestions.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
-            >
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
-                        {item.category}
-                      </span>
-                      <div className="flex items-center text-gray-500 text-sm">
-                        <User className="h-4 w-4 mr-1" />
-                        {item.author}
+          {filteredQuestions.map((item) => {
+            const isLiked = likedQuestions.includes(item.id);
+            const displayLikes = item.likes + (isLiked ? 1 : 0);
+            
+            return (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
+              >
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                          {item.category}
+                        </span>
+                        <div className="flex items-center text-gray-500 text-sm">
+                          <User className="h-4 w-4 mr-1" />
+                          {item.author}
+                        </div>
+                        <div className="flex items-center text-gray-500 text-sm">
+                          <Clock className="h-4 w-4 mr-1" />
+                          {new Date(item.date).toLocaleDateString('pt-BR')}
+                        </div>
                       </div>
-                      <div className="flex items-center text-gray-500 text-sm">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {new Date(item.date).toLocaleDateString('pt-BR')}
-                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                        {item.question}
+                      </h3>
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                      {item.question}
-                    </h3>
+                    <MessageCircle className="h-5 w-5 text-gray-400 flex-shrink-0 ml-4" />
                   </div>
-                  <MessageCircle className="h-5 w-5 text-gray-400 flex-shrink-0 ml-4" />
-                </div>
 
-                <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg mb-4">
-                  <p className="text-gray-700 leading-relaxed">
-                    {item.answer}
-                  </p>
-                </div>
+                  <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg mb-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      {item.answer}
+                    </p>
+                  </div>
 
-                <div className="flex items-center justify-between">
-                  <button className="flex items-center text-gray-500 hover:text-green-600 transition-colors">
-                    <ThumbsUp className="h-4 w-4 mr-1" />
-                    <span className="text-sm">{item.likes} útil</span>
-                  </button>
-                  <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                    Responder
-                  </button>
+                  <div className="flex items-center justify-between">
+                    <button 
+                      onClick={() => handleLikeQuestion(item.id)}
+                      className={`flex items-center transition-colors ${
+                        isLiked 
+                          ? 'text-green-600 hover:text-green-700' 
+                          : 'text-gray-500 hover:text-green-600'
+                      }`}
+                    >
+                      <ThumbsUp className={`h-4 w-4 mr-1 ${isLiked ? 'fill-current' : ''}`} />
+                      <span className="text-sm">{displayLikes} útil</span>
+                    </button>
+                    <button 
+                      onClick={() => handleRespond(item.id)}
+                      className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                    >
+                      Responder
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredQuestions.length === 0 && (

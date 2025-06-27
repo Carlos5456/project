@@ -4,6 +4,25 @@ import { Monitor, Mail, MapPin, Phone, Heart } from 'lucide-react';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.querySelector(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  const handleLinkClick = (href: string) => {
+    if (href.startsWith('#')) {
+      scrollToSection(href);
+    } else {
+      // For external links or other actions
+      alert('Esta funcionalidade estará disponível em breve!');
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -31,24 +50,36 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Links Rápidos</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#home" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <button 
+                  onClick={() => handleLinkClick('#home')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
                   Início
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#tutorials" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <button 
+                  onClick={() => handleLinkClick('#tutorials')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
                   Tutoriais
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#news" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <button 
+                  onClick={() => handleLinkClick('#news')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
                   Notícias
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#questions" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <button 
+                  onClick={() => handleLinkClick('#questions')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
                   Dúvidas
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -59,11 +90,21 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <Mail className="h-5 w-5 mr-3 mt-0.5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-300">contato@digitalinclusao.org</span>
+                <button 
+                  onClick={() => window.open('mailto:contato@digitalinclusao.org')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
+                  contato@digitalinclusao.org
+                </button>
               </li>
               <li className="flex items-start">
                 <Phone className="h-5 w-5 mr-3 mt-0.5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-300">(11) 9 9999-9999</span>
+                <button 
+                  onClick={() => window.open('tel:+5511999999999')}
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                >
+                  (11) 9 9999-9999
+                </button>
               </li>
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-3 mt-0.5 text-blue-400 flex-shrink-0" />
@@ -79,15 +120,24 @@ const Footer = () => {
               © {currentYear} Digital Inclusão. Todos os direitos reservados.
             </p>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <button 
+                onClick={() => handleLinkClick('#privacy')}
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 Política de Privacidade
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              </button>
+              <button 
+                onClick={() => handleLinkClick('#terms')}
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 Termos de Uso
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              </button>
+              <button 
+                onClick={() => handleLinkClick('#accessibility')}
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 Acessibilidade
-              </a>
+              </button>
             </div>
           </div>
         </div>

@@ -2,6 +2,16 @@ import React from 'react';
 import { BookOpen, Users, Lightbulb } from 'lucide-react';
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.querySelector(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <section id="home" className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,20 +25,20 @@ const Hero = () => {
             Aqui você encontra tutoriais, notícias e pode tirar suas dúvidas sobre informática básica.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#tutorials"
+            <button
+              onClick={() => scrollToSection('#tutorials')}
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
             >
               <BookOpen className="h-5 w-5 mr-2" />
               Começar a Aprender
-            </a>
-            <a
-              href="#questions"
+            </button>
+            <button
+              onClick={() => scrollToSection('#questions')}
               className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors duration-200 shadow-md hover:shadow-lg"
             >
               <Users className="h-5 w-5 mr-2" />
               Tirar Dúvidas
-            </a>
+            </button>
           </div>
         </div>
 

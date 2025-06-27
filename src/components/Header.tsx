@@ -11,6 +11,19 @@ const Header = () => {
     { name: 'Dúvidas', href: '#questions', icon: MessageCircle },
   ];
 
+  const handleNavClick = (href: string) => {
+    setIsMenuOpen(false);
+    
+    // Smooth scroll to section
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,14 +40,14 @@ const Header = () => {
             {navigation.map((item) => {
               const Icon = item.icon;
               return (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
+                  onClick={() => handleNavClick(item.href)}
                   className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
                 >
                   <Icon className="h-4 w-4" />
                   <span>{item.name}</span>
-                </a>
+                </button>
               );
             })}
           </nav>
@@ -55,15 +68,14 @@ const Header = () => {
               {navigation.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium py-2"
+                    onClick={() => handleNavClick(item.href)}
+                    className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium py-2 text-left"
                   >
                     <Icon className="h-5 w-5" />
                     <span>{item.name}</span>
-                  </a>
+                  </button>
                 );
               })}
             </nav>
